@@ -1,10 +1,6 @@
-﻿// workwithfile.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <cmath>
-
 
 struct Parallelogram {
     double a;
@@ -13,15 +9,15 @@ struct Parallelogram {
 };
 
 bool isSquare(const Parallelogram& p) {
-    return p.a == p.b && p.alpha == 90;
+    return p.a == p.b && std::fabs(p.alpha - 90.0) < 1e-6;
 }
 
 int main() {
-    std::ifstream inputFile("INPUT.txt");
+    std::ifstream inputFile("input.txt");
     std::ofstream outputFile("Rezultat.txt");
 
     if (!inputFile) {
-        std::cout << "Unable to open input file.";
+        std::cerr << "Unable to open input file." << std::endl;
         return 1;
     }
 
@@ -34,25 +30,27 @@ int main() {
 
     inputFile.close();
 
+    if (count == 0) {
+        std::cerr << "No data read from input file." << std::endl;
+        return 1;
+    }
+
+    bool foundSquare = false;
     for (int i = 0; i < count; i++) {
         if (isSquare(parallelograms[i])) {
-            outputFile << "Result " << parallelograms[i].a << " " << parallelograms[i].alpha << " gradusov" << std::endl;
+            outputFile << "Rezultat " << parallelograms[i].a << " " << parallelograms[i].alpha << " gradusov" << std::endl;
+            foundSquare = true;
         }
     }
 
     outputFile.close();
 
-    std::cout << "All good :))";
+    if (!foundSquare) {
+        std::cerr << "No squares found in the input data." << std::endl;
+    }
+    else {
+        std::cout << "All good :))" << std::endl;
+    }
+
     return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
